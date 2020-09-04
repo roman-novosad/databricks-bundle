@@ -3,10 +3,13 @@ import os
 from pathlib import Path
 from typing import Tuple
 from databricksbundle.display import display
+from databricksbundle.pipeline.decorator.duplicateColumnsChecker import checkDuplicateColumns
+from databricksbundle.pipeline.function.ServiceResolver import ServiceResolver
 from databricksbundle.pipeline.function.ServicesResolver import ServicesResolver
 from databricksbundle.pipeline.decorator.static_init import static_init
 from databricksbundle.pipeline.decorator.argsChecker import checkArgs
 from injecta.dtype.classLoader import loadClass
+from injecta.dtype.DType import DType
 from databricksbundle.notebook.helpers import getNotebookPath
 from databricksbundle.pipeline.decorator.executor.dataFrameLoader import loadDataFrame
 from databricksbundle.pipeline.decorator.executor.transformation import transform
@@ -31,6 +34,7 @@ class PipelineDecorator:
 
         cls._pipelinePath = Path(getNotebookPath())
         cls._servicesResolver = container.get(ServicesResolver)
+        cls._serviceResolver = container.get(ServiceResolver)
 
 class pipelineFunction(PipelineDecorator):
 
@@ -63,11 +67,16 @@ class transformation(PipelineDecorator):
     def __init__(self, *args, **kwargs):
         self._sources = args # type: Tuple[callable]
         self._displayEnabled = kwargs.get('display', False)
+        self._checkDuplicateColumns = kwargs.get('checkDuplicateColumns', True)
 
     def __call__(self, fun, *args, **kwargs):
         startIndex = len(self._sources)
-        services = self._servicesResolver.resolve(fun, startIndex, self._pipelinePath) # pylint: disable = no-member
+        services = self._servicesResolver.resolve(fun, startIndex, self._pipelinePath)  # pylint: disable = no-member
         df = transform(fun, self._sources, services)
+
+        if self._checkDuplicateColumns:
+            logger = self._serviceResolver.resolve(DType('logging', 'Logger'), self._pipelinePath)
+            checkDuplicateColumns(df, fun, self._sources, logger)
 
         if self._displayEnabled:
             display(df)
