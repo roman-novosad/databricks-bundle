@@ -3,3 +3,8 @@ services:
 
   pyspark.sql.session.SparkSession:
     factory: ['@databricksbundle.spark.BasicSessionFactory', 'create']
+
+  databricksbundle.dbutils.DatabricksConnectDbUtilsFactory:
+
+  databricksbundle.dbutils.DbUtilsWrapper:
+    factory: ['@databricksbundle.dbutils.DatabricksConnectDbUtilsFactory', 'create']
