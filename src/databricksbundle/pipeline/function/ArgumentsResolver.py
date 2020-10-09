@@ -11,9 +11,9 @@ class ArgumentsResolver:
     ):
         self.__argumentResolver = argumentResolver
 
-    def resolve(self, inspectedArguments: List[InspectedArgument], decoratorArgs: tuple, pipelinePath: Path):
+    def resolve(self, inspectedArguments: List[InspectedArgument], decoratorArgs: tuple, notebookPath: Path):
         def resolve(functionArgument: InspectedArgument, decoratorArgument):
-            return self.__argumentResolver.resolve(functionArgument, decoratorArgument, pipelinePath)
+            return self.__argumentResolver.resolve(functionArgument, decoratorArgument, notebookPath)
 
         decoratorArgsCount = len(decoratorArgs)
 

@@ -1,4 +1,3 @@
-import logging
 import unittest
 from pathlib import Path
 from box import Box
@@ -6,17 +5,12 @@ from injecta.container.ContainerInterface import ContainerInterface
 from injecta.dtype.DType import DType
 from injecta.service.class_.InspectedArgument import InspectedArgument
 from databricksbundle.pipeline.function.ArgumentResolver import ArgumentResolver
-from databricksbundle.pipeline.function.service.ServiceResolverInterface import ServiceResolverInterface
 from databricksbundle.spark.ScriptSessionFactory import ScriptSessionFactory
 
 class ArgumentResolverTest(unittest.TestCase):
 
     def setUp(self):
-        serviceResolvers = {
-            'logging.Logger': '@databricksbundle.test.DummyLoggerResolver'
-        }
-
-        self.__argumentResolver = ArgumentResolver(serviceResolvers, self.__createDummyContainer())
+        self.__argumentResolver = ArgumentResolver(self.__createDummyContainer(), None)
 
     def test_explicitIntArgument(self):
         inspectedArgument = InspectedArgument('myVar', DType('builtins', 'int'))
@@ -61,27 +55,7 @@ class ArgumentResolverTest(unittest.TestCase):
 
         self.assertEqual('Argument "myVar" must either have explicit value, default value or typehint defined', str(error.exception))
 
-    def test_mappedService(self):
-        inspectedArgument = InspectedArgument('myLogger', DType('logging', 'Logger'))
-
-        resolvedLogger = self.__argumentResolver.resolve(inspectedArgument, None, Path('.'))
-
-        self.assertIsInstance(resolvedLogger, logging.Logger)
-        self.assertEqual('test_logger', resolvedLogger.name)
-
-    def test_generalService(self):
-        inspectedArgument = InspectedArgument('sparkSessionFactory', DType(ScriptSessionFactory.__module__, 'ScriptSessionFactory'))
-
-        resolvedSparkSessionFactory = self.__argumentResolver.resolve(inspectedArgument, None, Path('.'))
-
-        self.assertIsInstance(resolvedSparkSessionFactory, ScriptSessionFactory)
-
     def __createDummyContainer(self):
-        class DummyLoggerResolver(ServiceResolverInterface):
-
-            def resolve(self, pipelinePath: Path) -> object:
-                return logging.getLogger('test_logger')
-
         class DummyContainer(ContainerInterface):
 
             def getParameters(self) -> Box:
@@ -91,9 +65,6 @@ class ArgumentResolverTest(unittest.TestCase):
                 })
 
             def get(self, ident):
-                if ident == 'databricksbundle.test.DummyLoggerResolver':
-                    return DummyLoggerResolver()
-
                 if ident == ScriptSessionFactory.__module__ or ident.__module__ == ScriptSessionFactory.__module__:
                     return ScriptSessionFactory()
 
