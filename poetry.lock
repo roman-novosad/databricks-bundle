@@ -75,12 +75,12 @@ version = "4.0.2"
 colorama = "*"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Console Bundle for the Pyfony Framework"
 name = "console-bundle"
 optional = false
 python-versions = ">=3.7.3,<3.8.0"
-version = "0.2.5"
+version = "0.2.6"
 
 [package.dependencies]
 colorlog = ">=4.0.0,<4.1.0"
@@ -472,7 +472,7 @@ version = "2.8.1"
 six = ">=1.5"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Add .env support to your django/flask apps in development and deployments"
 name = "python-dotenv"
 optional = false
@@ -569,7 +569,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools"]
 
 [metadata]
-content-hash = "312e44988e4634b1bee6476aee2deaf4b3d661270c39bf031a03ef2816b12001"
+content-hash = "b73b8c303c247c81f2a1fc1df2cfb6c0e9d04d739561574bbcee78ce47a0b47f"
 python-versions = "~3.7.3"
 
 [metadata.files]
@@ -602,8 +602,7 @@ colorlog = [
     {file = "colorlog-4.0.2.tar.gz", hash = "sha256:3cf31b25cbc8f86ec01fef582ef3b840950dea414084ed19ab922c8b493f9b42"},
 ]
 console-bundle = [
-    {file = "console-bundle-0.2.5.tar.gz", hash = "sha256:0280bc61cbcc4338e29a65b22dee9b37546627839745cd51c062c31d99f46944"},
-    {file = "console_bundle-0.2.5-py3-none-any.whl", hash = "sha256:f2029bbe346001a759b9774ce30455f6d3a80c36c500c8392400194fe12858f7"},
+    {file = "console_bundle-0.2.6-py3-none-any.whl", hash = "sha256:437fcf735fd496028899361b2c618ef0a3587fd75c072790c1b3f98584272bb0"},
 ]
 databricks-connect = [
     {file = "databricks-connect-6.2.0.tar.gz", hash = "sha256:b09a69e2bc2419361d044b93cb873715e3a006f8ef6ebd14f567ea3195eecee6"},

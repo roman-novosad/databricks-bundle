@@ -3,6 +3,16 @@ parameters:
     enableNotebookErrorHandler: True
 
 services:
+  databricksbundle.logger.notebookOrConsole:
+    class: logging.Logger
+    factory: [ '@databricksbundle.logger.NotebookOrConsoleLoggerResolver', 'resolve' ]
+
+  databricksbundle.logger.NotebookOrConsoleLoggerResolver:
+    arguments:
+      - '@consolebundle.logger'
+
+  databricksbundle.pipeline.function.ArgumentResolver:
+
   databricksbundle.notebook.function.ArgumentResolver:
 
   databricksbundle.notebook.function.ArgumentsResolver:

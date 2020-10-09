@@ -1,4 +1,5 @@
 import unittest
+from consolebundle.ConsoleBundle import ConsoleBundle
 from injecta.testing.servicesTester import testServices
 from injecta.config.YamlConfigReader import YamlConfigReader
 from injecta.package.pathResolver import resolvePath
@@ -32,6 +33,7 @@ class DatabricksBundleTest(unittest.TestCase):
 
             def _registerBundles(self) -> List[Bundle]:
                 return [
+                    ConsoleBundle(),
                     LoggerBundle(),
                     DatabricksBundle('spark_test.yaml')
                 ]
