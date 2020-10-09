@@ -4,7 +4,7 @@ from box import Box
 from injecta.container.ContainerInterface import ContainerInterface
 from injecta.dtype.DType import DType
 from injecta.service.class_.InspectedArgument import InspectedArgument
-from databricksbundle.pipeline.function.ArgumentResolver import ArgumentResolver
+from databricksbundle.notebook.function.ArgumentResolver import ArgumentResolver
 from databricksbundle.spark.ScriptSessionFactory import ScriptSessionFactory
 
 class ArgumentResolverTest(unittest.TestCase):

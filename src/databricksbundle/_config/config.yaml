@@ -3,18 +3,18 @@ parameters:
     enableNotebookErrorHandler: True
 
 services:
-  databricksbundle.pipeline.function.ArgumentResolver:
+  databricksbundle.notebook.function.ArgumentResolver:
 
-  databricksbundle.pipeline.function.ArgumentsResolver:
+  databricksbundle.notebook.function.ArgumentsResolver:
 
-  databricksbundle.pipeline.function.service.AutowiringResolver:
+  databricksbundle.notebook.function.service.AutowiringResolver:
     arguments:
-      - !tagged 'databricksbundle.pipeline.implicitServiceResolver'
+      - !tagged 'databricksbundle.notebook.implicitServiceResolver'
 
-  databricksbundle.pipeline.function.service.NotebookLoggerResolver:
+  databricksbundle.notebook.function.service.NotebookLoggerResolver:
     tags:
-      - 'databricksbundle.pipeline.implicitServiceResolver'
+      - 'databricksbundle.notebook.implicitServiceResolver'
 
-  databricksbundle.pipeline.NotebookLoggerFactory:
+  databricksbundle.notebook.NotebookLoggerFactory:
 
-  databricksbundle.pipeline.NotebookPathResolver:
+  databricksbundle.notebook.NotebookPathResolver:

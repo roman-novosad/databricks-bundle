@@ -11,6 +11,6 @@ class NotebookLoggerFactory:
         self.__loggerFactory = loggerFactory
 
     def create(self, notebookPath: Path) -> Logger:
-        pipelineName = f'{notebookPath.parent.parent.stem}.{notebookPath.parent.stem}'
+        notebookName = f'{notebookPath.parent.parent.stem}.{notebookPath.parent.stem}'
 
-        return self.__loggerFactory.create(pipelineName)
+        return self.__loggerFactory.create(notebookName)

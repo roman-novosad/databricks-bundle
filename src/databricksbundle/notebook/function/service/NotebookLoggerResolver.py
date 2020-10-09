@@ -1,7 +1,7 @@
 from logging import Logger
 from pathlib import Path
-from databricksbundle.pipeline.function.service.ServiceResolverInterface import ServiceResolverInterface
-from databricksbundle.pipeline.NotebookLoggerFactory import NotebookLoggerFactory
+from databricksbundle.notebook.function.service.ServiceResolverInterface import ServiceResolverInterface
+from databricksbundle.notebook.NotebookLoggerFactory import NotebookLoggerFactory
 
 class NotebookLoggerResolver(ServiceResolverInterface):
 

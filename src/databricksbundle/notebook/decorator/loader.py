@@ -2,14 +2,14 @@
 from typing import Tuple, List
 from injecta.service.class_.InspectedArgument import InspectedArgument
 from databricksbundle.display import display
-from databricksbundle.pipeline.NotebookPathResolver import NotebookPathResolver
-from databricksbundle.pipeline.decorator.containerLoader import containerInitEnvVarDefined
-from databricksbundle.pipeline.function.ArgumentsResolver import ArgumentsResolver
-from databricksbundle.pipeline.decorator.argsChecker import checkArgs
-from databricksbundle.pipeline.decorator.executor.dataFrameLoader import loadDataFrame
-from databricksbundle.pipeline.decorator.executor.transformation import transform
-from databricksbundle.pipeline.decorator.executor.dataFrameSaver import saveDataFrame
-from databricksbundle.pipeline.function.functionInspector import inspectFunction
+from databricksbundle.notebook.NotebookPathResolver import NotebookPathResolver
+from databricksbundle.notebook.decorator.containerLoader import containerInitEnvVarDefined
+from databricksbundle.notebook.function.ArgumentsResolver import ArgumentsResolver
+from databricksbundle.notebook.decorator.argsChecker import checkArgs
+from databricksbundle.notebook.decorator.executor.dataFrameLoader import loadDataFrame
+from databricksbundle.notebook.decorator.executor.transformation import transform
+from databricksbundle.notebook.decorator.executor.dataFrameSaver import saveDataFrame
+from databricksbundle.notebook.function.functionInspector import inspectFunction
 
 def _getContainer():
     if containerInitEnvVarDefined():
@@ -24,7 +24,7 @@ def _resolveArguments(inspectedArguments: List[InspectedArgument], decoratorArgs
     notebookPathResolver: NotebookPathResolver = _getContainer().get(NotebookPathResolver)
     return argumentsResolver.resolve(inspectedArguments, decoratorArgs, notebookPathResolver.resolve())
 
-def _pipelineFunctionExecuted(fun):
+def _notebookFunctionExecuted(fun):
     return fun.__module__ == '__main__'
 
 def _resolveSourceFunctions(decoratorArgs: tuple) -> Tuple[callable]:
@@ -38,14 +38,14 @@ def _resolveSourceFunctions(decoratorArgs: tuple) -> Tuple[callable]:
 
     return tuple(sourceFunctions)
 
-class pipelineFunction:
+class notebookFunction:
 
     def __init__(self, *args): # pylint: disable = unused-argument
         self._decoratorArgs: tuple = args
         checkArgs(args, self.__class__.__name__)
 
     def __call__(self, fun, *args, **kwargs):
-        if _pipelineFunctionExecuted(fun):
+        if _notebookFunctionExecuted(fun):
             arguments = _resolveArguments(inspectFunction(fun), self._decoratorArgs)
             fun(*arguments)
 
@@ -59,7 +59,7 @@ class dataFrameLoader:
         checkArgs(args, self.__class__.__name__)
 
     def __call__(self, fun, *args, **kwargs):
-        if _pipelineFunctionExecuted(fun):
+        if _notebookFunctionExecuted(fun):
             arguments = _resolveArguments(inspectFunction(fun), self._decoratorArgs)
             df = loadDataFrame(fun, arguments)
 
@@ -75,7 +75,7 @@ class transformation:
         self._displayEnabled = kwargs.get('display', False)
 
     def __call__(self, fun, *args, **kwargs):
-        if _pipelineFunctionExecuted(fun):
+        if _notebookFunctionExecuted(fun):
             sourceFunctions = _resolveSourceFunctions(self._decoratorArgs)
             startIndex = len(sourceFunctions)
             arguments = _resolveArguments(inspectFunction(fun)[startIndex:], self._decoratorArgs[startIndex:])
@@ -92,7 +92,7 @@ class dataFrameSaver:
         self._decoratorArgs: tuple = args
 
     def __call__(self, fun, *args, **kwargs):
-        if _pipelineFunctionExecuted(fun):
+        if _notebookFunctionExecuted(fun):
             sourceFunctions = _resolveSourceFunctions(self._decoratorArgs)
             startIndex = len(sourceFunctions)
             arguments = _resolveArguments(inspectFunction(fun)[startIndex:], self._decoratorArgs[startIndex:])

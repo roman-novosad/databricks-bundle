@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import List
 from injecta.service.class_.InspectedArgument import InspectedArgument
-from databricksbundle.pipeline.function.ArgumentResolver import ArgumentResolver
+from databricksbundle.notebook.function.ArgumentResolver import ArgumentResolver
 
 class ArgumentsResolver:
 

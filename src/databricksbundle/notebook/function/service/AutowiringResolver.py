@@ -4,7 +4,7 @@ from inspect import signature as createInspectSignature
 from injecta.container.ContainerInterface import ContainerInterface
 from injecta.dtype.AbstractType import AbstractType
 from injecta.dtype.classLoader import loadClass
-from databricksbundle.pipeline.function.service.ServiceResolverInterface import ServiceResolverInterface
+from databricksbundle.notebook.function.service.ServiceResolverInterface import ServiceResolverInterface
 
 class AutowiringResolver:
 

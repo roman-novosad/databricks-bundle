@@ -4,8 +4,8 @@ from pathlib import Path
 from box import Box
 from injecta.container.ContainerInterface import ContainerInterface
 from injecta.dtype.DType import DType
-from databricksbundle.pipeline.function.service.AutowiringResolver import AutowiringResolver
-from databricksbundle.pipeline.function.service.ServiceResolverInterface import ServiceResolverInterface
+from databricksbundle.notebook.function.service.AutowiringResolver import AutowiringResolver
+from databricksbundle.notebook.function.service.ServiceResolverInterface import ServiceResolverInterface
 from databricksbundle.spark.ScriptSessionFactory import ScriptSessionFactory
 
 class AutowiringResolverTest(unittest.TestCase):
@@ -26,7 +26,7 @@ class AutowiringResolverTest(unittest.TestCase):
     def test_resolvedService(self):
         argumentType = DType('logging', 'Logger')
 
-        resolvedLogger = self.__autowiringResolver.resolve(argumentType, Path('.'))
+        resolvedLogger = self.__autowiringResolver.resolve(argumentType, Path(''))
 
         self.assertIsInstance(resolvedLogger, Logger)
         self.assertEqual('test_logger', resolvedLogger.name)
@@ -34,7 +34,7 @@ class AutowiringResolverTest(unittest.TestCase):
     def test_generalService(self):
         argumentType = DType(ScriptSessionFactory.__module__, 'ScriptSessionFactory')
 
-        resolvedSparkSessionFactory = self.__autowiringResolver.resolve(argumentType, Path('.'))
+        resolvedSparkSessionFactory = self.__autowiringResolver.resolve(argumentType, Path(''))
 
         self.assertIsInstance(resolvedSparkSessionFactory, ScriptSessionFactory)
 

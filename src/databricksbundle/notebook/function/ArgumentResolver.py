@@ -3,7 +3,7 @@ from injecta.container.ContainerInterface import ContainerInterface
 from injecta.dtype.AbstractType import AbstractType
 from injecta.parameter.allPlaceholdersReplacer import replaceAllPlaceholders, findAllPlaceholders
 from injecta.service.class_.InspectedArgument import InspectedArgument
-from databricksbundle.pipeline.function.service.AutowiringResolver import AutowiringResolver
+from databricksbundle.notebook.function.service.AutowiringResolver import AutowiringResolver
 
 class ArgumentResolver:
 
