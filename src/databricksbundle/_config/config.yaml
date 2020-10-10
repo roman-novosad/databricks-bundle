@@ -8,23 +8,27 @@ services:
     factory: [ '@databricksbundle.logger.NotebookOrConsoleLoggerResolver', 'resolve' ]
 
   databricksbundle.logger.NotebookOrConsoleLoggerResolver:
-    arguments:
-      - '@consolebundle.logger'
-
-  databricksbundle.pipeline.function.ArgumentResolver:
 
   databricksbundle.notebook.function.ArgumentResolver:
 
   databricksbundle.notebook.function.ArgumentsResolver:
 
-  databricksbundle.notebook.function.service.AutowiringResolver:
+  databricksbundle.notebook.function.AutowiringResolver:
     arguments:
-      - !tagged 'databricksbundle.notebook.implicitServiceResolver'
+      - !tagged 'databricksbundle.notebook.function.prioritizedService'
 
-  databricksbundle.notebook.function.service.NotebookLoggerResolver:
+  databricksbundle.notebook.logger:
+    class: logging.Logger
+    factory: ['@databricksbundle.notebook.NotebookLoggerFactory', 'create']
     tags:
-      - 'databricksbundle.notebook.implicitServiceResolver'
+      - 'databricksbundle.notebook.function.prioritizedService'
+
+  databricksbundle.notebook.path:
+    class: pathlib.Path
+    factory: ['@databricksbundle.notebook.NotebookPathResolver', 'resolve']
 
   databricksbundle.notebook.NotebookLoggerFactory:
+    arguments:
+      - '@databricksbundle.notebook.path'
 
   databricksbundle.notebook.NotebookPathResolver:

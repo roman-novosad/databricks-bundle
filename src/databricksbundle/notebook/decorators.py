@@ -2,7 +2,6 @@
 from typing import Tuple, List
 from injecta.service.class_.InspectedArgument import InspectedArgument
 from databricksbundle.display import display
-from databricksbundle.notebook.NotebookPathResolver import NotebookPathResolver
 from databricksbundle.notebook.decorator.containerLoader import containerInitEnvVarDefined
 from databricksbundle.notebook.function.ArgumentsResolver import ArgumentsResolver
 from databricksbundle.notebook.decorator.argsChecker import checkArgs
@@ -21,8 +20,7 @@ def _getContainer():
 
 def _resolveArguments(inspectedArguments: List[InspectedArgument], decoratorArgs: tuple):
     argumentsResolver: ArgumentsResolver = _getContainer().get(ArgumentsResolver)
-    notebookPathResolver: NotebookPathResolver = _getContainer().get(NotebookPathResolver)
-    return argumentsResolver.resolve(inspectedArguments, decoratorArgs, notebookPathResolver.resolve())
+    return argumentsResolver.resolve(inspectedArguments, decoratorArgs)
 
 def _notebookFunctionExecuted(fun):
     return fun.__module__ == '__main__'

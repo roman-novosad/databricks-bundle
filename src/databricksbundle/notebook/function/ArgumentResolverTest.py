@@ -1,5 +1,4 @@
 import unittest
-from pathlib import Path
 from box import Box
 from injecta.container.ContainerInterface import ContainerInterface
 from injecta.dtype.DType import DType
@@ -15,35 +14,35 @@ class ArgumentResolverTest(unittest.TestCase):
     def test_explicitIntArgument(self):
         inspectedArgument = InspectedArgument('myVar', DType('builtins', 'int'))
 
-        resolvedArgument = self.__argumentResolver.resolve(inspectedArgument, 123, Path('.'))
+        resolvedArgument = self.__argumentResolver.resolve(inspectedArgument, 123)
 
         self.assertEqual(123, resolvedArgument)
 
     def test_plainStrArgument(self):
         inspectedArgument = InspectedArgument('myVar', DType('builtins', 'str'))
 
-        resolvedArgument = self.__argumentResolver.resolve(inspectedArgument, 'Hello', Path('.'))
+        resolvedArgument = self.__argumentResolver.resolve(inspectedArgument, 'Hello')
 
         self.assertEqual('Hello', resolvedArgument)
 
     def test_strArgumentWithPlaceholders(self):
         inspectedArgument = InspectedArgument('myVar', DType('builtins', 'str'), 'Some default hello', True)
 
-        resolvedArgument = self.__argumentResolver.resolve(inspectedArgument, 'Hello %name% %surname%', Path('.'))
+        resolvedArgument = self.__argumentResolver.resolve(inspectedArgument, 'Hello %name% %surname%')
 
         self.assertEqual('Hello Peter Novak', resolvedArgument)
 
     def test_strArgumentService(self):
         inspectedArgument = InspectedArgument('myVar', DType(ScriptSessionFactory.__module__, 'ScriptSessionFactory'))
 
-        resolvedSparkSessionFactory = self.__argumentResolver.resolve(inspectedArgument, f'@{ScriptSessionFactory.__module__}', Path('.'))
+        resolvedSparkSessionFactory = self.__argumentResolver.resolve(inspectedArgument, f'@{ScriptSessionFactory.__module__}')
 
         self.assertIsInstance(resolvedSparkSessionFactory, ScriptSessionFactory)
 
     def test_argumentWithDefaultValue(self):
         inspectedArgument = InspectedArgument('myVar', DType('builtins', 'str'), 'Peter', True)
 
-        resolvedArgument = self.__argumentResolver.resolve(inspectedArgument, None, Path('.'))
+        resolvedArgument = self.__argumentResolver.resolve(inspectedArgument, None)
 
         self.assertEqual('Peter', resolvedArgument)
 
@@ -51,7 +50,7 @@ class ArgumentResolverTest(unittest.TestCase):
         inspectedArgument = InspectedArgument('myVar', DType('inspect', '_empty'))
 
         with self.assertRaises(Exception) as error:
-            self.__argumentResolver.resolve(inspectedArgument, None, Path('.'))
+            self.__argumentResolver.resolve(inspectedArgument, None)
 
         self.assertEqual('Argument "myVar" must either have explicit value, default value or typehint defined', str(error.exception))
 

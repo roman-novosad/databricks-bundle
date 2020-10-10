@@ -1,4 +1,3 @@
-from pathlib import Path
 from typing import List
 from injecta.service.class_.InspectedArgument import InspectedArgument
 from databricksbundle.notebook.function.ArgumentResolver import ArgumentResolver
@@ -11,9 +10,9 @@ class ArgumentsResolver:
     ):
         self.__argumentResolver = argumentResolver
 
-    def resolve(self, inspectedArguments: List[InspectedArgument], decoratorArgs: tuple, notebookPath: Path):
+    def resolve(self, inspectedArguments: List[InspectedArgument], decoratorArgs: tuple):
         def resolve(functionArgument: InspectedArgument, decoratorArgument):
-            return self.__argumentResolver.resolve(functionArgument, decoratorArgument, notebookPath)
+            return self.__argumentResolver.resolve(functionArgument, decoratorArgument)
 
         decoratorArgsCount = len(decoratorArgs)
 

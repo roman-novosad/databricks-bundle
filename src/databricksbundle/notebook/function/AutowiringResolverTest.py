@@ -1,24 +1,17 @@
 import unittest
 from logging import getLogger, Logger
-from pathlib import Path
 from box import Box
 from injecta.container.ContainerInterface import ContainerInterface
 from injecta.dtype.DType import DType
-from databricksbundle.notebook.function.service.AutowiringResolver import AutowiringResolver
-from databricksbundle.notebook.function.service.ServiceResolverInterface import ServiceResolverInterface
+from databricksbundle.notebook.function.AutowiringResolver import AutowiringResolver
 from databricksbundle.spark.ScriptSessionFactory import ScriptSessionFactory
 
 class AutowiringResolverTest(unittest.TestCase):
 
     def setUp(self):
-        class DummyLoggerResolver(ServiceResolverInterface):
-
-            def resolve(self, notebookPath: Path) -> Logger:
-                return getLogger('test_logger')
-
         self.__autowiringResolver = AutowiringResolver(
             [
-                DummyLoggerResolver()
+                getLogger('test_logger'),
             ],
             self.__createDummyContainer()
         )
@@ -26,7 +19,7 @@ class AutowiringResolverTest(unittest.TestCase):
     def test_resolvedService(self):
         argumentType = DType('logging', 'Logger')
 
-        resolvedLogger = self.__autowiringResolver.resolve(argumentType, Path(''))
+        resolvedLogger = self.__autowiringResolver.resolve(argumentType)
 
         self.assertIsInstance(resolvedLogger, Logger)
         self.assertEqual('test_logger', resolvedLogger.name)
@@ -34,7 +27,7 @@ class AutowiringResolverTest(unittest.TestCase):
     def test_generalService(self):
         argumentType = DType(ScriptSessionFactory.__module__, 'ScriptSessionFactory')
 
-        resolvedSparkSessionFactory = self.__autowiringResolver.resolve(argumentType, Path(''))
+        resolvedSparkSessionFactory = self.__autowiringResolver.resolve(argumentType)
 
         self.assertIsInstance(resolvedSparkSessionFactory, ScriptSessionFactory)
 

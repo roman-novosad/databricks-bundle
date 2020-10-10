@@ -1,9 +1,8 @@
-from pathlib import Path
 from injecta.container.ContainerInterface import ContainerInterface
 from injecta.dtype.AbstractType import AbstractType
 from injecta.parameter.allPlaceholdersReplacer import replaceAllPlaceholders, findAllPlaceholders
 from injecta.service.class_.InspectedArgument import InspectedArgument
-from databricksbundle.notebook.function.service.AutowiringResolver import AutowiringResolver
+from databricksbundle.notebook.function.AutowiringResolver import AutowiringResolver
 
 class ArgumentResolver:
 
@@ -15,7 +14,7 @@ class ArgumentResolver:
         self.__container = container
         self.__autowiringResolver = autowiringResolver
 
-    def resolve(self, functionArgument: InspectedArgument, decoratorArgument, notebookPath: Path):
+    def resolve(self, functionArgument: InspectedArgument, decoratorArgument):
         argumentType = functionArgument.dtype
 
         if decoratorArgument is not None:
@@ -31,7 +30,7 @@ class ArgumentResolver:
         if not argumentType.isDefined():
             raise Exception(f'Argument "{functionArgument.name}" must either have explicit value, default value or typehint defined')
 
-        return self.__autowiringResolver.resolve(functionArgument.dtype, notebookPath)
+        return self.__autowiringResolver.resolve(functionArgument.dtype)
 
     def __resolveStringArgument(self, decoratorArgument):
         if decoratorArgument[0:1] == '@':
